@@ -1,0 +1,71 @@
+#Start Automating Here
+
+
+
+
+
+
+
+
+
+#Finish Automating Here
+
+
+# ==============================================================================
+# PLAIN-ENGLISH FILE AUTOMATOR - QUICK REFERENCE GUIDE
+# Every line starting with '#' is ignored by the script and will never run.
+# ==============================================================================
+#
+# 1. VARIABLES & GLOBAL SETTINGS (Put these at the top of the file)
+# ------------------------------------------------------------------------------
+#   $MY_VAR = C:\Path\To\Folder       -> Create reusable shortcuts for paths
+#   POWER = ON                        -> Set to ON to run, OFF to pause
+#   WATCH = $DL, C:\Users\Max\Desktop -> Comma-separated folders to monitor
+#
+# 2. RULE STRUCTURE (Evaluated from top to bottom; stops at first match)
+# ------------------------------------------------------------------------------
+#   [Rule Name]
+#   WHEN <condition>
+#   AND <another condition>           -> Optional: all AND lines must be true
+#   THEN <action>
+#   THEN <second action>              -> Optional: chain multiple actions
+#   AND KEEP GOING                    -> Optional: let later rules also run
+#
+# 3. CONDITIONS (Use after 'WHEN' or 'AND', or join with 'OR')
+# ------------------------------------------------------------------------------
+#   always                            -> Matches every file
+#   not <condition>                   -> Reverses any condition below
+#
+#   File Extensions & Names:
+#   extension is mp4, mkv, mov        -> Matches any listed extension
+#   extension is not tmp, log         -> Excludes listed extensions
+#   name contains Caseoh              -> Matches substring anywhere in name
+#   name does not contain draft       -> Excludes substring
+#   name starts with IMG_             -> Matches beginning of filename
+#   name ends with _final             -> Matches end of filename (before .ext)
+#   name matches wildcard *2026*      -> Supports * (any text) and ? (1 char)
+#   name matches regex ^clip_\d+      -> Full regular expression matching
+#   folder is Desktop                 -> Matches parent folder (for multi-WATCH)
+#
+#   File Size & Age:
+#   size is over 100 mb               -> Units: b, kb, mb, gb (also: under)
+#   age is older than 7 days          -> Units: minutes, hours, days (also: newer than)
+#
+# 4. ACTIONS (Use after 'THEN')
+# ------------------------------------------------------------------------------
+#   move to $DL\Folder Name           -> Moves file (auto-renames _1 if duplicate)
+#   copy to D:\Backups                -> Copies file to another folder
+#   rename to NewName.{ext}           -> Renames file in place
+#   delete file                       -> Permanently deletes the file
+#   log Custom message: {filename}    -> Writes a note into sorter.log
+#
+# 5. DYNAMIC TOKENS (Use inside paths, 'rename to', or 'log')
+# ------------------------------------------------------------------------------
+#   {filename}  -> Full name with extension (e.g., video.mp4)
+#   {name}      -> Name without extension    (e.g., video)
+#   {ext}       -> Extension without dot     (e.g., mp4)
+#   {year}      -> 4-digit year              (e.g., 2026)
+#   {month}     -> 2-digit month             (e.g., 11)
+#   {day}       -> 2-digit day               (e.g., 13)
+#   {folder}    -> Name of the watched folder(e.g., Downloads)
+# ==============================================================================
