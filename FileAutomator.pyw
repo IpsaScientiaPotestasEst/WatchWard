@@ -1,3 +1,4 @@
+import csv
 import fnmatch
 import logging
 import os
@@ -98,11 +99,12 @@ def evaluate_clause(clause, ctx):
     actual = field_map[field]
     actual_lower = actual.lower()
 
-    # Split comma-separated options (unless regex)
+    # Split comma-separated options while respecting quotes (unless regex)
     if op == "matches regex":
         items = [raw_val.strip("'\"")]
     else:
-        items = [i.strip().strip("'\"") for i in raw_val.split(",") if i.strip()]
+        parsed_row = next(csv.reader([raw_val], skipinitialspace=True), [])
+        items = [i.strip().strip("'\"") for i in parsed_row if i.strip()]
 
     if field in ("extension", "ext"):
         items = [i.lower().lstrip(".") for i in items]
@@ -285,12 +287,13 @@ def resolve_unique_path(target_dir, filename):
     return dest_path
 
 
-def format_tokens(text, file_path):
+def format_tokens(text, file_path, host_dir=None):
     """Replaces {name}, {ext}, {year}, {month}, {day}, and {folder} tokens."""
     now = datetime.now()
     filename = os.path.basename(file_path)
     base, ext = os.path.splitext(filename)
-    parent_folder = os.path.basename(os.path.dirname(file_path))
+    source_dir = host_dir if host_dir else os.path.dirname(file_path)
+    parent_folder = os.path.basename(source_dir)
 
     tokens = {
         "{filename}": filename,
@@ -306,12 +309,12 @@ def format_tokens(text, file_path):
     return text
 
 
-def run_english_action(action_line, current_path, rule_name):
+def run_english_action(action_line, current_path, rule_name, host_dir=None):
     """Executes a plain-English THEN command and returns the updated file path."""
     if not current_path or not os.path.exists(current_path):
         return None
 
-    text = format_tokens(action_line.strip(), current_path)
+    text = format_tokens(action_line.strip(), current_path, host_dir=host_dir)
     lower = text.lower()
     filename = os.path.basename(current_path)
 
@@ -416,7 +419,9 @@ class PlainEnglishSorterHandler(FileSystemEventHandler):
 
                 if matched:
                     for action in rule["actions"]:
-                        current_path = run_english_action(action, current_path, rule["name"])
+                        current_path = run_english_action(
+                            action, current_path, rule["name"], host_dir=self.host_dir
+                        )
                         if not current_path:
                             break
                     if rule["stop"]:
