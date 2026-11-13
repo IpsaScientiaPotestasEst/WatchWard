@@ -129,11 +129,17 @@ def evaluate_clause(clause, ctx):
     return False
 
 
+def split_outside_quotes(text, keyword):
+    """Splits text by a keyword (e.g. 'AND' or 'OR') only when outside single/double quotes."""
+    pattern = rf"""\s+{keyword}\s+(?=(?:[^'"]|'[^']*'|"[^"]*")*$)"""
+    return re.split(pattern, text, flags=re.I)
+
+
 def evaluate_when(when_expression, ctx):
     """Evaluates compound plain-English conditions joined by 'OR' and 'AND'."""
-    or_groups = re.split(r"\s+OR\s+", when_expression, flags=re.I)
+    or_groups = split_outside_quotes(when_expression, "OR")
     for group in or_groups:
-        and_clauses = re.split(r"\s+AND\s+", group, flags=re.I)
+        and_clauses = split_outside_quotes(group, "AND")
         if all(evaluate_clause(c, ctx) for c in and_clauses):
             return True
     return False
