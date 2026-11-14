@@ -20,7 +20,7 @@
 # ------------------------------------------------------------------------------
 #   $MY_VAR = C:\Path\To\Folder       -> Create reusable shortcuts for paths
 #   POWER = ON                        -> Set to ON to run, OFF to pause
-#   WATCH = $DL, C:\Users\Max\Desktop -> Comma-separated folders to monitor
+#   WATCH = $DL, C:\Users\Example\Desktop -> Comma-separated folders to monitor
 #
 # 2. RULE STRUCTURE (Evaluated from top to bottom; stops at first match)
 # ------------------------------------------------------------------------------
